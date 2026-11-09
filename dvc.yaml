@@ -1,0 +1,48 @@
+# Registration is not a stage: make train runs src/train/register.py after dvc repro (see the README).
+stages:
+  ingest:
+    cmd: python -m src.ingest.run
+    deps:
+      - data/raw
+      - src/ingest
+      - src/common
+      - ta_kit/__init__.py
+      - ta_kit/drops.py
+      - ta_kit/metrics.py
+    outs:
+      - data/clean
+
+  stats:
+    cmd: python -m src.stats.build
+    deps:
+      - data/clean
+      - src/stats
+      - src/common
+    params:
+      - slice
+      - stats
+    outs:
+      - stats
+
+  baseline:
+    cmd: python -m src.train.baseline
+    deps:
+      - data/clean
+      - stats
+      - src/features
+      - src/evaluate
+      - src/common
+      # Add here any module you write that the baseline imports, or DVC can keep a stale model.
+      - src/train/baseline.py
+      - src/train/model.py
+      - ta_kit/__init__.py
+      - ta_kit/drops.py
+      - ta_kit/metrics.py
+    params:
+      - slice
+      - baseline
+    outs:
+      - models/baseline
+    metrics:
+      - metrics/p1.json:
+          cache: false

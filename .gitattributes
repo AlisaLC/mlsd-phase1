@@ -1,0 +1,2 @@
+# LF everywhere, so a clone made with Windows git still runs the Makefile and scripts in Linux containers.
+* text=auto eol=lf

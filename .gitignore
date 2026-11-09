@@ -1,0 +1,18 @@
+# DVC outputs
+/data/*
+!/data/raw/
+/data/raw/*
+!/data/raw/.gitkeep
+/stats/
+/models/
+
+# MLflow server state
+/mlflow.db
+/mlartifacts/
+
+# Local
+/synth-raw/
+/drops/
+/.cache/
+__pycache__/
+.pytest_cache/
